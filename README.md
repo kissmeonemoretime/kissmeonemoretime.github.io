@@ -44,7 +44,25 @@ if __name__ == "__main__":
                        ("Neutral", {'Openness': 0}),
                        ("Agree", {'Openness': 0.5}),
                        ("Strongly Agree", {'Openness': 1})],
-                      {'Openness': 0, 'Con
+                      {'Openness': 0, 'Conscientiousness': 0})
+    
+    quiz.add_question("I prefer to plan activities rather than acting spontaneously.", 
+                      [("Strongly Disagree", {'Conscientiousness': 1}),
+                       ("Disagree", {'Conscientiousness': 0.5}),
+                       ("Neutral", {'Conscientiousness': 0}),
+                       ("Agree", {'Conscientiousness': -0.5}),
+                       ("Strongly Agree", {'Conscientiousness': -1})],
+                      {'Conscientiousness': 0})
+    
+    quiz.add_question("I find it easy to communicate with others and express my thoughts.", 
+                      [("Strongly Disagree", {'Introversion': 1}),
+                       ("Disagree", {'Introversion': 0.5}),
+                       ("Neutral", {'Introversion': 0}),
+                       ("Agree", {'Extroversion': 0.5}),
+                       ("Strongly Agree", {'Extroversion': 1})],
+                      {'Extroversion': 0, 'Introversion': 0})
+
+    quiz.run_quiz()
 
 
 
