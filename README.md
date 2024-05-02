@@ -20,9 +20,9 @@ class PersonalityQuiz:
         for i in range(len(self.questions)):
             print("\nQuestion", i+1, ":", self.questions[i])
             for j, answer in enumerate(self.answers[i]):
-                print(j+1, "-", answer)
-            user_answer = int(input("Your answer: "))
-            for trait, score in self.answers[i][user_answer - 1][1].items():
+                print(j+1, "-", answer[0])
+            user_answer = int(input("Your answer: ")) - 1
+            for trait, score in self.answers[i][user_answer][1].items():
                 self.personality_scores[trait] += score
 
         dominant_trait = max(self.personality_scores, key=self.personality_scores.get)
@@ -63,6 +63,7 @@ if __name__ == "__main__":
                       {'Extroversion': 0, 'Introversion': 0})
 
     quiz.run_quiz()
+
 
 
 
