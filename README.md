@@ -1,65 +1,112 @@
-import random
+#!/usr/bin/python
+# William Thing
+# March 29, 2015
+# Personality Test
+#
+# The Keirsey test measures four independent dimensions of personality:
+# Extrovert versus Introvert (E vs I): what energizes you
+# Sensation versus iNtuition (S vs N): what you focus on
+# Thinking versus Feeling (T vs F): how you interpret what you focus on
+# Judging versus Perceiving (J vs P): how you approach life
+# Individuals are categorized as being on one side or the other of each of these dimensions.  
+# The corresponding letters are put together to form a personality type. 
+# For example, if you are an extravert, intuitive, thinking, perceiving 
+# person then you are referred to as an ENTP.
+# This program will take people's Keirsey test answers to determine their
+# personality type based on the four dimensions. Takes answer from given input
+# file and writes results to a given output file.
 
-class PersonalityQuiz:
-    def __init__(self):
-        self.questions = []
-        self.answers = []
-        self.personality_traits = ['Extroversion', 'Introversion', 'Openness', 'Conscientiousness']
-        self.personality_scores = {trait: 0 for trait in self.personality_traits}
+# Returns number of times a specific answer was recorded in each
+# of the four categories.
+def sort_answers(answers, char):
+   my_list = [0, 0, 0, 0];
+   for i in range(10):
+      if answers[i*7].upper() == char:
+         my_list[0] += 1;
+      for j in range(3):
+         for k in range(1,3):
+            if answers[i*7+j*2+k].upper() == char:
+               my_list[j+1] += 1;
+   return my_list;
 
-    def add_question(self, question, answers, trait_scores):
-        self.questions.append(question)
-        self.answers.append(answers)
-        for trait, score in trait_scores.items():
-            self.personality_scores[trait] += score
+# Returns percentage of B answers in the Keirsey test to determine a personality
+# type
+def percent_of_B(A_list, B_list):
+   result = [];
+   for i in range(len(B_list)):
+      percentage = int(round(float(B_list[i]) / (A_list[i] 
+                                         + B_list[i])*100));
+      result.append(percentage);
+   return result;
 
-    def run_quiz(self):
-        print("Welcome to the Personality Quiz!")
-        print("Answer the following questions with a number from 1 to 5:")
-        print("1 - Strongly Disagree, 2 - Disagree, 3 - Neutral, 4 - Agree, 5 - Strongly Agree")
-        for i in range(len(self.questions)):
-            print("\nQuestion", i+1, ":", self.questions[i])
-            for j, answer in enumerate(self.answers[i]):
-                print(j+1, "-", answer[0])
-            user_answer = int(input("Your answer: ")) - 1
-            for trait, score in self.answers[i][user_answer][1].items():
-                self.personality_scores[trait] += score
+# Returns a person's personality type based on their responses
+# 'X' signifies that a specific personality type for that dimension
+# cannot be determined.
+def extract_personality(B_list):
+   result = ""
+   # dimension one: Extrovert versus Introvert (E vs I): what energizes you
+   if B_list[0] > 50:
+      result += "I";
+   elif B_list[0] < 50:
+      result += "E";
+   else:
+      result += "X";
+   # dimension two: Sensation versus iNtuition (S vs N): what you focus on   
+   if B_list[1] < 50:
+      result += "S";
+   elif B_list[1] > 50:
+      result += "N";
+   else:
+      result += "X";
+   # dimension three: Thinking versus Feeling (T vs F): how you interpret what you focus on
+   if B_list[2] < 50:
+      result += "T";
+   elif B_list[2] > 50:
+      result += "F";
+   else:
+      result += "X";
+   # dimension four: Judging versus Perceiving (J vs P): how you approach life 
+   if B_list[3] < 50:
+      result += "J";
+   elif B_list[3] > 50:
+      result += "P";
+   else:
+      result += "X";
+      
+   return result;
 
-        dominant_trait = max(self.personality_scores, key=self.personality_scores.get)
-        print("\nQuiz ended. Your dominant personality trait is:", dominant_trait)
+# Introduction to Personality Test Software
+def intro():
+   print("""This program processes a file of answers to the
+Keirsey Temperament Personality Sorter. It converts
+the various A and B answers for each person into
+a sequence of B-percentages and then into a
+four-letter personality type.""");
 
-if __name__ == "__main__":
-    quiz = PersonalityQuiz()
-    quiz.add_question("I prefer socializing in large groups rather than alone.", 
-                      [("Strongly Disagree", {'Introversion': 1}),
-                       ("Disagree", {'Introversion': 0.5}),
-                       ("Neutral", {'Introversion': 0}),
-                       ("Agree", {'Extroversion': 0.5}),
-                       ("Strongly Agree", {'Extroversion': 1})],
-                      {'Extroversion': 0, 'Introversion': 0})
-    
-    quiz.add_question("I enjoy trying new things and exploring different ideas.", 
-                      [("Strongly Disagree", {'Conscientiousness': 0}),
-                       ("Disagree", {'Conscientiousness': 0.5}),
-                       ("Neutral", {'Openness': 0}),
-                       ("Agree", {'Openness': 0.5}),
-                       ("Strongly Agree", {'Openness': 1})],
-                      {'Openness': 0, 'Conscientiousness': 0})
-    
-    quiz.add_question("I prefer to plan activities rather than acting spontaneously.", 
-                      [("Strongly Disagree", {'Conscientiousness': 1}),
-                       ("Disagree", {'Conscientiousness': 0.5}),
-                       ("Neutral", {'Conscientiousness': 0}),
-                       ("Agree", {'Conscientiousness': -0.5}),
-                       ("Strongly Agree", {'Conscientiousness': -1})],
-                      {'Conscientiousness': 0})
-    
-    quiz.add_question("I find it easy to communicate with others and express my thoughts.", 
-                      [("Strongly Disagree", {'Introversion': 1}),
-                       ("Disagree", {'Introversion': 0.5}),
-                       ("Neutral", {'Introversion': 0}),
-                       ("Agree", {'Extroversion': 0.5}),
-                       ("Strongly Agree", {'Extroversion': 1})],
-                      {'Extroversion': 0, 'Introversion': 0})
+def main():
+   intro();
+   input_file = raw_input("input file name? ");
+   output_file = raw_input("output file name? ");
+   fo = open(input_file, "r");
+   fw = open(output_file, "wb");
+   content = fo.readlines();
+   names = []
+   personality_test = []
+   for i in range(len(content)):
+      if i % 2 != 0:
+         personality_test.append(content[i].rstrip('\n'));
+      else:
+         names.append(content[i].rstrip('\n'));
+   ppl_count = 0;
+   while ppl_count < len(names):
+      A_response = sort_answers(personality_test[ppl_count], 'A');
+      B_response = sort_answers(personality_test[ppl_count], 'B');
+      overall_B = percent_of_B(A_response, B_response);
+      personality = extract_personality(overall_B);
+      data = names[ppl_count] + ": " + str(overall_B) + " = " + personality  + "\n";
+      fw.write(data);
+      ppl_count+= 1;
 
-    quiz.run_quiz()
+   fo.close();
+   
+if __name__ == "__main__": main()
