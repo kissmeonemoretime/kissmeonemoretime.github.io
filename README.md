@@ -11,20 +11,24 @@ class Quiz:
 
     def run_quiz(self):
         score = 0
+        print("Welcome to the General Knowledge Quiz!")
+        print("Answer the following questions:")
         for i in range(len(self.questions)):
-            print("Question", i+1, ":", self.questions[i])
+            print("\nQuestion", i+1, ":", self.questions[i])
             user_answer = input("Your answer: ")
             if user_answer.lower() == self.answers[i].lower():
                 print("Correct!")
                 score += 1
             else:
-                print("Incorrect!")
-        print("Quiz ended. You scored {}/{}".format(score, len(self.questions)))
+                print("Incorrect! The correct answer is:", self.answers[i])
+        print("\nQuiz ended. You scored {}/{}".format(score, len(self.questions)))
 
 if __name__ == "__main__":
     quiz = Quiz()
-    quiz.add_question("What is the capital of France?", "Paris")
-    quiz.add_question("What is 2 + 2?", "4")
-    quiz.add_question("Who wrote 'Romeo and Juliet'?", "Shakespeare")
-    quiz.add_question("What is the tallest mammal?", "Giraffe")
+    quiz.add_question("What is the capital of Italy?", "Rome")
+    quiz.add_question("What is the largest planet in our solar system?", "Jupiter")
+    quiz.add_question("Who painted the Mona Lisa?", "Leonardo da Vinci")
+    quiz.add_question("What is the powerhouse of the cell?", "Mitochondria")
     quiz.run_quiz()
+
+
