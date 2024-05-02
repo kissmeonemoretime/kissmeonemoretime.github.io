@@ -63,7 +63,3 @@ if __name__ == "__main__":
                       {'Extroversion': 0, 'Introversion': 0})
 
     quiz.run_quiz()
-
-
-
-
